@@ -1,0 +1,21 @@
+services:
+  mysql-db:
+    image: mysql:8.0         # Specify MySQL version
+    container_name: customers_service_db  # Optional: container name
+    environment:
+      MYSQL_ROOT_PASSWORD: rootroot   # Root password
+      MYSQL_DATABASE: customers_sdb         # Database name
+      MYSQL_USER: alphou                 # User for the database
+      MYSQL_PASSWORD: alphou        # User's password
+    ports:
+      - "3307:3306"        # Expose MySQL port to host
+    volumes:
+      - mysql_data:/var/lib/mysql   # Volume for persisting data
+    networks:
+      - app-network          # Network (defined below)
+
+volumes:
+  mysql_data:                  # Volume definition for MySQL data
+
+networks:
+  app-network:                 # Network definition

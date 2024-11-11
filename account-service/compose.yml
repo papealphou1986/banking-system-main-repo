@@ -1,0 +1,20 @@
+services:
+  postgres-db:
+    image: postgres:15            # Specify PostgreSQL version
+    container_name: account_service_db    # Optional: name the container
+    environment:
+      POSTGRES_DB: account_sdb        # Database name
+      POSTGRES_USER: alphou         # Username
+      POSTGRES_PASSWORD: alphou # Password for the user
+    ports:
+      - "5434:5432"                  # Expose PostgreSQL port
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Volume for data persistence
+    networks:
+      - app-network                  # Define a network
+
+volumes:
+  postgres_data:                     # Volume definition
+
+networks:
+  app-network:                       # Network definition
