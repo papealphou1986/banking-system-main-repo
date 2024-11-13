@@ -1,0 +1,37 @@
+services:
+  banking-system-discovery-service:
+    build: ./discovery-service
+    container_name: banking-system-discovery-service
+    ports:
+      - "8761:8761"
+    networks:
+      - banking-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://192.168.154.250:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s  # Allows time for service startup
+
+  banking-system-configs-service:
+    build: ./configs-service
+    container_name: banking-system-configs-service
+    ports:
+      - "8011:8011"
+    environment:
+      - DISCOVERY_SERVICE_URL=http://banking-system-discovery-service:8761/eureka/
+    depends_on:
+      banking-system-discovery-service:
+        condition: service_healthy
+    networks:
+      - banking-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://192.168.154.250:8011/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+networks:
+  banking-network:
+    driver: bridge
